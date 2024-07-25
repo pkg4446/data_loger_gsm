@@ -1,9 +1,13 @@
-const express           = require('express');
-const router            = express.Router();
+const express   = require('express');
+const router    = express.Router();
 
-const user_interface    = require('./user_interface');
-router.use('/',user_interface);
-const device            = require('./device');
+const web       = require('./web');
+const device    = require('./device');
+
+router.get('/', async function(req, res) {
+    res.redirect("/web/");
+});
+router.use('/web',web);
 router.use('/device',device);
 
 module.exports  = router;
