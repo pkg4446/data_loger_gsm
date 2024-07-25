@@ -9,7 +9,6 @@ if(!file_system.check(path_user)) file_system.folderMK(path_user);
 const app   = express();
 const port  = 3002;
 
-app.use(favicon(path.join(__dirname, '/public', 'favicon.ico')));
 app.use(express.json());
 app.use('/', index_router);
 

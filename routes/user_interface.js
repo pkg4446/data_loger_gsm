@@ -1,9 +1,10 @@
-const express       = require('express');
-const file_system   = require('../fs_core');
-const router        = express.Router();
+const express   = require('express');
+const html      = require('../html_viewer');
+const router    = express.Router();
 
-router.get('/', async function(req, res) {    
-    
+router.get('/', async function(req, res) {
+    let web_page = html.page("index");
+    res.status(201).send(web_page);
 });
 
 module.exports = router;

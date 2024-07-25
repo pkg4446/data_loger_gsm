@@ -1,7 +1,7 @@
 const fs    = require('fs');
 
 module.exports = {
-
+    
     Dir:    async function(FOLDER){
         try {
             const PATH  = FOLDER + "/";
@@ -47,6 +47,16 @@ module.exports = {
                 console.log(path_make);
                 if(!fs.existsSync(path_make, 'utf8'))fs.mkdirSync(path_make);
             }
+        }
+        return response;
+    },
+
+    fileRead:    function(FOLDER,FILE){ 
+        let response;  
+        try {
+            response = fs.readFileSync(`.${FOLDER}/${FILE}`, 'utf8'); 
+        } catch (error) {
+            response = null;
         }
         return response;
     },
