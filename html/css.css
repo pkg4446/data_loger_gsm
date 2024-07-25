@@ -16,6 +16,11 @@ header {
 .navbar {
     background-color: #333;
     position: relative;
+    /*
+    position: fixed;
+    top:0;
+    width: 100%;
+    */
 }
 
 /* 숨겨진 체크박스 */
@@ -68,6 +73,28 @@ header {
     left: 0;
     width: 100%;
     background-color: #333;
+}
+
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
