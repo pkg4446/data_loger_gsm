@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트팜 컨트롤러 대시보드</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #333;
+            position: relative;
+        }
+
+        .navbar .icon {
+            display: none;
+            font-size: 24px;
+            color: white;
+            padding: 14px 20px;
+            cursor: pointer;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar ul li {
+            text-align: center;
+        }
+
+        .navbar ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #575757;
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .menu-links {
+            display: flex;
+        }
+
+        .menu-links a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .menu-links a:hover {
+            background-color: #575757;
+        }
+
+        /* 햄버거 메뉴 버튼 */
+        .menu-toggle-label {
+            display: none;
+            font-size: 24px;
+            color: white;
+            padding: 14px 20px;
+            cursor: pointer;
+        }
+
+        .menu-toggle:checked + .menu-links {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+        }
+
+        .menu-toggle:checked + .menu-links a {
+            padding: 14px;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar ul li {
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .menu-toggle-label {
+                display: block;
+            }
+
+            .menu-toggle:checked + .navbar ul {
+                display: flex;
+            }
+            
+            main {
+                padding: 5px;
+            }
+
+            section {
+                padding: 10px;
+            }
+
+            footer {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
