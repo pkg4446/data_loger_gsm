@@ -10,6 +10,7 @@ const app   = express();
 const port  = 3002;
 
 app.use(express.json());
+app.use('/public',express.static(__dirname +'/public'));
 app.use('/', index_router);
 
 app.listen(port, () => {
