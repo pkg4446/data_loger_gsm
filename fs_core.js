@@ -54,16 +54,16 @@ module.exports = {
     fileRead:    function(FOLDER,FILE){ 
         let response;  
         try {
-            response = fs.readFileSync(`.${FOLDER}/${FILE}`, 'utf8'); 
+            response = fs.readFileSync(`${FOLDER}/${FILE}`, 'utf8'); 
         } catch (error) {
             response = null;
         }
         return response;
     },
-
+    
     fileMK:    function(FOLDER,DATA,FILE){        
         try {
-            fs.writeFileSync(`${FOLDER}/${FILE}.csv`, DATA);
+            fs.writeFileSync(`${FOLDER}/${FILE}`, DATA);
         } catch (error) {
             return false;
         }
@@ -72,7 +72,7 @@ module.exports = {
 
     fileADD:    function(FOLDER,DATA,FILE){     
         try {
-            fs.appendFileSync(`${FOLDER}/${FILE}.csv`, DATA);
+            fs.appendFileSync(`${FOLDER}/${FILE}`, DATA);
         } catch (error) {
             return false;
         }
@@ -135,34 +135,4 @@ module.exports = {
             return false;
         }
     },
-
-    first_csv:   async function(FOLDER,FILE,){
-        try {
-            const PATH = FOLDER + "/";
-            const Data = fs.readFileSync(PATH + FILE, 'utf8').split("\r\n");       
-            let response = Data[2].split(",")[0];
-            return response;
-        } catch (error) {    
-            return false;
-        }
-    },
-
-    /*
-    data_csv:   async function(FOLDER,FILE,){
-        try {
-            const PATH = FOLDER + "/";
-            const Data = fs.readFileSync(PATH + FILE, 'utf8').split("\r\n");         
-            let response = "";
-            response += Data[0] + "\r\n";
-            response += Data[1] + "\r\n";
-            console.log(response);
-            for (let index = 2; index < Data.length; index += 60) {
-                response += Data[index] + "\r\n"          
-            }
-            return response;
-        } catch (error) {    
-            return false;
-        }
-    },
-    */
 }

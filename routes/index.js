@@ -2,6 +2,7 @@ const express   = require('express');
 const router    = express.Router();
 
 const web       = require('./web');
+const user      = require('./user');
 const device    = require('./device');
 
 router.route("/")
@@ -13,6 +14,7 @@ router.route("/")
         res.status(201).send(response);
     });
 router.use('/web',web);
+router.use('/user',user);
 router.use('/device',device);
 
 module.exports  = router;

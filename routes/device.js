@@ -18,11 +18,11 @@ router.post('/log', async function(req, res) {
     let file_content    = date_now+","+req.body.t_w+","+req.body.t_l+","+req.body.t_a+","+req.body.t_o+"\r\n";
     
     if(!file_system.check(path_log)) file_system.folderMK(path_log);
-    file_system.fileMK(path_device,IP+"\r\n","ip");
+    file_system.fileMK(path_device,IP+"\r\n","ip.txt");
     if(file_system.check(path_log+"/"+filename+".csv")){
-        file_system.fileADD(path_log,file_content,filename);
+        file_system.fileADD(path_log,file_content,filename+".csv");
     }else{
-        file_system.fileMK(path_log,file_content,filename);
+        file_system.fileMK(path_log,file_content,filename+".csv");
     }
     res.status(201).send("ack");
 });
