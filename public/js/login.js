@@ -1,5 +1,7 @@
 localStorage.removeItem('user');
 localStorage.removeItem('token');
+localStorage.removeItem('device');
+
 document.getElementById('userForm').addEventListener('submit', function(event) {
     event.preventDefault();
 

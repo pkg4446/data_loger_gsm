@@ -22,6 +22,8 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
             throw new Error('아이디 또는 비밀번호가 누락됐습니다.');
         }else if (response.status==403) {
             throw new Error('비밀번호가 다릅니다.');
+        }else if (response.status==406) {
+            throw new Error('이미 가입된 아이디 입니다.');
         }
         return response.text(); // JSON 대신 텍스트로 응답을 읽습니다.
     })

@@ -22,4 +22,18 @@ router.get('/join', async function(req, res) {
     let web_page = html.page("join",css,js);
     res.status(201).send(web_page);
 });
+
+router.get('/connect', async function(req, res) {
+    const css = html.css("/public/css/main") + html.css("/public/css/user");
+    const js  = html.js("/public/js/device_reg");
+    let web_page = html.page("device_reg",css,js);
+    res.status(201).send(web_page);
+});
+
+router.get('/select', async function(req, res) {
+    const css = html.css("/public/css/main") + html.css("/public/css/list");
+    const js  = html.js("/public/js/device_list");
+    let web_page = html.page("list",css,js);
+    res.status(201).send(web_page);
+});
 module.exports = router;

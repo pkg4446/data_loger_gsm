@@ -32,7 +32,7 @@ router.post('/join', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const join_data = req.body;
-    if(join_data.id!=undefined&&join_data.pass!=undefined&&join_data.check!=undefined){
+    if(join_data.id!=undefined && join_data.pass!=undefined && join_data.check!=undefined){
         status_code = 403;
         response    = "password";
         const   path_user = "./data/user/"+join_data.id;
@@ -48,6 +48,78 @@ router.post('/join', async function(req, res) {
             file_system.fileMK(path_user,file_content,"config.csv");
         }
     }
+    res.status(status_code).send(response);
+});
+
+router.post('/connect', async function(req, res) {
+    let status_code = 400;
+    let response    = "nodata";
+    const user_data = req.body;
+    if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.name!=undefined && user_data.name.length>0){
+        user_data.name = user_data.name.replaceAll(' ',"_");
+        const   path_user   = "./data/user/"+user_data.id;
+        const   path_device = "./data/device/"+user_data.dvid;
+        if(file_system.check(path_user+"/login.txt")){
+            if(file_system.check(path_user) && file_system.fileRead(path_user,"login.txt")==user_data.token){
+                if(file_system.check(path_device)){
+                    if(file_system.check(path_device+"/owner.txt")){
+                        status_code = 409;
+                        response    = "duplication";
+                    }else{
+                        status_code = 200;
+                        response    = "success";
+                        const file_content = file_system.fileRead(path_user,"device.csv");
+                        if(file_content){
+                            const devices  = file_content.split("\r\n");
+                            let device_duplication = false;
+                            for (let index = 0; index < devices.length; index++) {
+                                if(devices[index] == user_data.dvid){
+                                    device_duplication = true;
+                                    break;
+                                }
+                            }
+                            if(!device_duplication) file_system.fileADD(path_user,user_data.dvid+","+user_data.name+"\r\n","device.csv");
+                        }else{
+                            file_system.fileMK(path_user,user_data.dvid+","+user_data.name+"\r\n","device.csv");
+                        }
+                        file_system.fileMK(path_device,user_data.id,"owner.txt")
+                    }
+                }else{
+                    status_code = 403;
+                    response    = "device";
+                }
+            }
+        }else{
+            status_code = 401;
+            response    = "user";
+        }
+    }
+    res.status(status_code).send(response);
+});
+
+router.post('/list', async function(req, res) {
+    let status_code = 400;
+    let response    = "nodata";
+    const user_data = req.body;
+    
+    if(user_data.id!=undefined && user_data.token!=undefined){
+        const   path_user   = "./data/user/"+user_data.id;
+        if(file_system.check(path_user+"/login.txt")){
+            if(file_system.check(path_user) && file_system.fileRead(path_user,"login.txt")==user_data.token){
+                if(file_system.check(path_user+"/device.csv")){
+                    status_code = 200;
+                    response    = file_system.fileRead(path_user,"device.csv");
+                }else{
+                    status_code = 403;
+                    response    = "device";
+                }
+            }
+        }else{
+            status_code = 401;
+            response    = "user";
+        }
+    }
+
     res.status(status_code).send(response);
 });
 
