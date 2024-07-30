@@ -14,4 +14,14 @@ module.exports = {
         response += fs.readFileSync(`./html/script.html`, 'utf8');
         return response;
     },
+
+    css:   function(CSS){ 
+        const response = '<link href="'+CSS+'.css" rel="stylesheet" type="text/css" />';
+        return response;
+    },
+
+    js:   function(JS){ 
+        const response = '<script src = "'+JS+'.js"></script>';
+        return response;
+    },
 }
