@@ -2,7 +2,7 @@ const fs    = require('fs');
 
 module.exports = {
     
-    Dir:    async function(FOLDER){
+    Dir:    function(FOLDER){
         try {
             const PATH  = FOLDER + "/";
             const dir   = fs.readdirSync(PATH);

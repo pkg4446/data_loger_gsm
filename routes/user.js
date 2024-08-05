@@ -88,6 +88,9 @@ router.post('/connect', async function(req, res) {
                     status_code = 403;
                     response    = "device";
                 }
+            }else{
+                status_code = 401;
+                response    = "user";
             }
         }else{
             status_code = 401;
@@ -101,7 +104,6 @@ router.post('/list', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const user_data = req.body;
-    
     if(user_data.id!=undefined && user_data.token!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
         if(file_system.check(path_user+"/login.txt")){
@@ -113,13 +115,92 @@ router.post('/list', async function(req, res) {
                     status_code = 403;
                     response    = "device";
                 }
+            }else{
+                status_code = 401;
+                response    = "user";
             }
         }else{
             status_code = 401;
             response    = "user";
         }
     }
+    res.status(status_code).send(response);
+});
 
+router.post('/log', async function(req, res) {
+    let status_code = 400;
+    let response    = "nodata";
+    const user_data = req.body;
+    if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.date!=undefined){
+        const   path_user   = "./data/user/"+user_data.id;
+        if(file_system.check(path_user+"/login.txt")){
+            if(file_system.check(path_user) && file_system.fileRead(path_user,"login.txt")==user_data.token){
+                if(file_system.check(path_user+"/device.csv")){
+                    status_code = 200;
+                    response    = "ok";
+                    if(user_data.date[1]<10){
+                        const temp_num = user_data.date[1];
+                        user_data.date[1] = "0"+temp_num;
+                    }
+                    let yesterday = user_data.date[2]-1;
+                    if(user_data.date[2]<10){
+                        const temp_num = user_data.date[2];
+                        user_data.date[2] = "0"+temp_num;
+                        yesterday = "0"+(temp_num-1);
+                    }
+                    if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+user_data.date[2]+".csv")){
+                        response    = "log\r\n";
+                        if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+yesterday+".csv")){
+                            response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],yesterday+".csv");
+                        }
+                        response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],user_data.date[2]+".csv");
+                    }else{
+                        let latest_path = "./data/device/"+user_data.dvid;
+                        let log_dir     = file_system.Dir(latest_path);
+                        if(log_dir.length>2){
+                            if(file_system.check(latest_path+"/"+user_data.date[0])){latest_path+="/"+user_data.date[0]}
+                            else if(file_system.check(latest_path+"/"+(user_data.date[0]-1))){latest_path+="/"+user_data.date[0]-1}
+                            else{response = "null";}
+                            if(response != "null"){
+                                log_dir = file_system.Dir(latest_path);
+                                if(log_dir.length>0){
+                                    latest_path += "/"+log_dir[log_dir.length-1];
+                                }
+                                log_dir = file_system.Dir(latest_path);
+                                if(log_dir.length>0){
+                                    response = "log\r\n"+file_system.fileRead(latest_path,log_dir[log_dir.length-1]);
+                                }else{
+                                    response = "null";
+                                }
+                            }
+                        }else{
+                            response = "null";
+                        }
+                        /*
+                        if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1])){
+                            response += "day\r\n"+file_system.Dir("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]);
+                        }else if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0])){
+                            response += "month\r\n"+file_system.Dir("./data/device/"+user_data.dvid+"/"+user_data.date[0]);
+                        }else if(file_system.check("./data/device/"+user_data.dvid)){
+                            response += "year\r\n"+file_system.Dir("./data/device/"+user_data.dvid);
+                        }else{
+                            
+                        }
+                        */
+                    }
+                }else{
+                    status_code = 403;
+                    response    = "device";
+                }
+            }else{
+                status_code = 401;
+                response    = "user";
+            }
+        }else{
+            status_code = 401;
+            response    = "user";
+        }
+    }
     res.status(status_code).send(response);
 });
 

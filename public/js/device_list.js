@@ -18,15 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             response.status
-            if (response.status==400) {
-                throw new Error('정보가 누락됐습니다.');
-                window.location.href = '/web';
-            }else if (response.status==401) {
-                throw new Error('로그인 정보가 없습니다.');
+            if (response.status==400 || response.status==401) {
+                alert('로그인 정보가 없습니다.');
                 window.location.href = '/web/login';
             }else if (response.status==403) {
-                throw new Error('등록된 장비가 없습니다.');
+                alert('등록된 장비가 없습니다.');
                 window.location.href = '/web/connect';
+            }else if (response.status==404) {
+                throw new Error('not found');
             }
             return response.text(); // JSON 대신 텍스트로 응답을 읽습니다.
         })
