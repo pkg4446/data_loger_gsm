@@ -5,7 +5,7 @@ const requestIp     = require('request-ip');
 
 router.post('/log', async function(req, res) {    
     const IP  = requestIp.getClientIp(req);
-    console.log(IP,req.body);
+    //console.log(IP,req.body);
 
     const   path_device = "./data/device/"+req.body.DEVID;
     const   date_now    = new Date();
@@ -28,7 +28,7 @@ router.post('/log', async function(req, res) {
 });
 router.post('/refresh', async function(req, res) {    
     const IP  = requestIp.getClientIp(req);
-    console.log(IP,req.body);
+    //console.log(IP,req.body);
     res.status(201).send("ack");
 });
 

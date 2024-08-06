@@ -8,7 +8,7 @@ if(localStorage.getItem('user')==null || localStorage.getItem('token')==null){
     const device    = localStorage.getItem('device');
     const date_now  = new Date();
 
-    fetch('http://localhost:3002/user/log', {
+    fetch(window.location.protocol+"//"+window.location.host+"/user/log", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
