@@ -1,6 +1,7 @@
 window.addEventListener('load', fetchInitialData);
-        /*
+        
         function fetchInitialData() {
+            /*
             fetch(window.location.protocol+"//"+window.location.host+"/user/config", {
                 method: 'post',
                 headers: {
@@ -16,6 +17,7 @@ window.addEventListener('load', fetchInitialData);
                 console.error('Error fetching initial data:', error);
                 alert('초기 데이터를 불러오는 데 실패했습니다.');
             });
+            */
         }
 
         function populateForm(data) {
@@ -45,7 +47,7 @@ window.addEventListener('load', fetchInitialData);
             document.getElementById('external-hours').value = data.airConditioning.external.hours;
             document.getElementById('external-minutes').value = data.airConditioning.external.minutes;
         }
-        */
+
         function sendData(type, action) {
             let data = {
                 id    : localStorage.getItem('user'),
