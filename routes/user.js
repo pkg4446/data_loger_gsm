@@ -229,7 +229,7 @@ router.post('/cmd', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const user_data = req.body;
-    if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.date!=undefined){
+    if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
         const   path_device = "./data/device/"+user_data.dvid;
         if(file_system.check(path_user+"/login.txt")){
@@ -237,8 +237,69 @@ router.post('/cmd', async function(req, res) {
                 if(file_system.check(path_device+"/owner.txt")&&(file_system.fileRead(path_device,"owner.txt")==user_data.id)){
                     status_code = 200;
                     response    = "ok";
-                    console.log(user_data);
-                    //mqtt.send();
+                    let command = [];
+                    if(user_data.type == 'irrigation'){
+                        if(user_data.data[0][0]!=''){
+                            command.push("set water run "+user_data.data[0][0]+"\n");
+                        }
+                        if(user_data.data[0][1]!=''){
+                            command.push("set water stp "+user_data.data[0][1]+"\n");
+                        }
+                        if(user_data.data[1][0]!=''){
+                            command.push("set liquid run "+user_data.data[1][0]+"\n");
+                        }
+                        if(user_data.data[1][1]!=''){
+                            command.push("set liquid stp "+user_data.data[1][1]+"\n");
+                        }
+                    }else if(user_data.type == 'lighting'){
+                        for (let index = 0; index < user_data.data.length; index++) {
+                            const tartget = String.fromCharCode(97+index);
+                            if(user_data.data[index][0]!=''){
+                                command.push("set lamp_"+tartget+" run "+parseInt(user_data.data[index][0].split(':')[0])+"\n");
+                            }
+                            if(user_data.data[index][1]!=''){
+                                command.push("set lamp_"+tartget+" stp "+parseInt(user_data.data[index][1].split(':')[0])+"\n");
+                            }
+                        }
+                    }else if(user_data.type == 'temperature'){
+                        if(user_data.data.target!=''){
+                            command.push("set temp run "+user_data.data.target+"\n");
+                        }
+                        if(user_data.data.tolerance!=''){
+                            command.push("set temp stp "+user_data.data.tolerance+"\n");
+                        }
+                    }else if(user_data.type == 'airConditioning'){
+                        if(user_data.data[0][0]!=''){
+                            command.push("set circul_i run "+user_data.data[0][0]+"\n");
+                        }
+                        if(user_data.data[0][1]!=''){
+                            command.push("set circul_i stp "+user_data.data[0][1]+"\n");
+                        }
+                        if(user_data.data[1][0]!=''){
+                            command.push("set circul_o run "+user_data.data[1][0]+"\n");
+                        }
+                        if(user_data.data[1][1]!=''){
+                            command.push("set circul_o stp "+user_data.data[1][1]+"\n");
+                        }
+                        console.log(command);
+                    }else if(user_data.type == 'houseControl'){
+                        if(user_data.data == "open"){
+                            command.push("wing on\n");
+                        }else if(user_data.data == "close"){
+                            command.push("wing off\n");
+                        }
+                    }
+                    if(command.length > 0){
+                        for (let index = 0; index < command.length; index++) {
+                            const mqtt_cmd = {
+                                TARGET:  user_data.dvid,
+                                COMMEND: command[index]
+                            };
+                            mqtt.send(mqtt_cmd);
+                        }
+                    }
+                    else{response = "null"}
+                    
                 }else{
                     status_code = 403;
                     response    = "device";

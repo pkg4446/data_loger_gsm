@@ -1,8 +1,8 @@
 window.addEventListener('load', fetchInitialData);
-
+        /*
         function fetchInitialData() {
             fetch(window.location.protocol+"//"+window.location.host+"/user/config", {
-                method: 'GET',
+                method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -45,62 +45,40 @@ window.addEventListener('load', fetchInitialData);
             document.getElementById('external-hours').value = data.airConditioning.external.hours;
             document.getElementById('external-minutes').value = data.airConditioning.external.minutes;
         }
-
+        */
         function sendData(type, action) {
-            let data;
+            let data = {
+                id    : localStorage.getItem('user'),
+                token : localStorage.getItem('token'),
+                dvid  : localStorage.getItem('device'),
+                type  : type
+            }
             switch(type) {
                 case 'irrigation':
-                    data = {
-                        water: {
-                            hours: document.getElementById('water-hours').value,
-                            minutes: document.getElementById('water-minutes').value
-                        },
-                        nutrient: {
-                            hours: document.getElementById('nutrient-hours').value,
-                            minutes: document.getElementById('nutrient-minutes').value
-                        }
-                    };
+                    data.data= [[document.getElementById('water-hours').value,document.getElementById('water-minutes').value],
+                                  [document.getElementById('nutrient-hours').value,document.getElementById('nutrient-minutes').value]
+                                ];
                     break;
                 case 'lighting':
-                    data = {
-                        a: {
-                            start: document.getElementById('light-a-start').value,
-                            end: document.getElementById('light-a-end').value
-                        },
-                        b: {
-                            start: document.getElementById('light-b-start').value,
-                            end: document.getElementById('light-b-end').value
-                        },
-                        c: {
-                            start: document.getElementById('light-c-start').value,
-                            end: document.getElementById('light-c-end').value
-                        },
-                        d: {
-                            start: document.getElementById('light-d-start').value,
-                            end: document.getElementById('light-d-end').value
-                        }
-                    };
+                    data.data=[[document.getElementById('light-a-start').value,document.getElementById('light-a-end').value],
+                                [document.getElementById('light-b-start').value,document.getElementById('light-b-end').value],
+                                [document.getElementById('light-c-start').value,document.getElementById('light-c-end').value],
+                                [document.getElementById('light-d-start').value,document.getElementById('light-d-end').value]
+                            ];
                     break;
                 case 'temperature':
-                    data = {
-                        target: document.getElementById('target-temp').value,
-                        tolerance: document.getElementById('temp-tolerance').value
-                    };
+                    data.data = {
+                                target: document.getElementById('target-temp').value,
+                                tolerance: document.getElementById('temp-tolerance').value
+                            };
                     break;
                 case 'airConditioning':
-                    data = {
-                        internal: {
-                            hours: document.getElementById('internal-hours').value,
-                            minutes: document.getElementById('internal-minutes').value
-                        },
-                        external: {
-                            hours: document.getElementById('external-hours').value,
-                            minutes: document.getElementById('external-minutes').value
-                        }
-                    };
+                    data.data = [[document.getElementById('internal-hours').value,document.getElementById('internal-minutes').value],
+                                [document.getElementById('external-hours').value,document.getElementById('external-minutes').value]
+                            ];
                     break;
                 case 'houseControl':
-                    data = { action: action };
+                    data.data = action;
                     break;
             }
 
@@ -111,7 +89,7 @@ window.addEventListener('load', fetchInitialData);
                 },
                 body: JSON.stringify(data),
             })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(result => {
                 console.log('Success:', result);
                 alert(`${type} 데이터가 성공적으로 전송되었습니다.`);

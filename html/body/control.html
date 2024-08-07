@@ -3,14 +3,18 @@
         <div class="panel">
             <h2>관수</h2>
             <div class="input-group">
-                <label>물: </label>
-                <input type="number" id="water-hours" min="0" max="23"> 시
-                <input type="number" id="water-minutes" min="0" max="59"> 분
+                <label>물💧 : </label>
+                <label>동작 시간 :</label>
+                <input type="number" id="water-hours" min="0" max="255"> 초 /
+                <label>정지 시간 :</label>
+                <input type="number" id="water-minutes" min="0" max="255"> 분
             </div>
             <div class="input-group">
-                <label>양액: </label>
-                <input type="number" id="nutrient-hours" min="0" max="23"> 시
-                <input type="number" id="nutrient-minutes" min="0" max="59"> 분
+                <label>양액 : </label>
+                <label>동작 시간 :</label>
+                <input type="number" id="nutrient-hours" min="0" max="255"> 초 /
+                <label>정지 시간 :</label>
+                <input type="number" id="nutrient-minutes" min="0" max="255"> 분
             </div>
             <button onclick="sendData('irrigation')">관수 데이터 전송</button>
         </div>
