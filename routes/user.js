@@ -1,6 +1,7 @@
 const crypto        = require("crypto");
 const express       = require('express');
 const file_system   = require('../fs_core');
+const mqtt          = require('../mqtt');
 const router        = express.Router();
 
 router.post('/login', async function(req, res) {
@@ -131,7 +132,6 @@ router.post('/log', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const user_data = req.body;
-    console.log(user_data);
     if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.date!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
         const   path_device = "./data/device/"+user_data.dvid;
@@ -196,62 +196,20 @@ router.post('/log', async function(req, res) {
 });
 
 
-router.post('/log', async function(req, res) {
+router.post('/cmd', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const user_data = req.body;
     if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined && user_data.date!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
+        const   path_device = "./data/device/"+user_data.dvid;
         if(file_system.check(path_user+"/login.txt")){
             if(file_system.check(path_user) && file_system.fileRead(path_user,"login.txt")==user_data.token){
-                if(file_system.check(path_user+"/device.csv")){
-
-
+                if(file_system.check(path_device+"/owner.txt")&&(file_system.fileRead(path_device,"owner.txt")==user_data.id)){
                     status_code = 200;
                     response    = "ok";
-
-
-                    if(user_data.date[1]<10){
-                        const temp_num = user_data.date[1];
-                        user_data.date[1] = "0"+temp_num;
-                    }
-                    let yesterday = user_data.date[2]-1;
-                    if(user_data.date[2]<10){
-                        const temp_num = user_data.date[2];
-                        user_data.date[2] = "0"+temp_num;
-                        yesterday = "0"+(temp_num-1);
-                    }
-                    if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+user_data.date[2]+".csv")){
-                        response    = "log\r\n";
-                        if(file_system.check("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1]+"/"+yesterday+".csv")){
-                            response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],yesterday+".csv");
-                        }
-                        response    += file_system.fileRead("./data/device/"+user_data.dvid+"/"+user_data.date[0]+"/"+user_data.date[1],user_data.date[2]+".csv");
-                    }else{
-                        let latest_path = "./data/device/"+user_data.dvid;
-                        let log_dir     = file_system.Dir(latest_path);
-                        if(log_dir.length>2){
-                            if(file_system.check(latest_path+"/"+user_data.date[0])){latest_path+="/"+user_data.date[0]}
-                            else if(file_system.check(latest_path+"/"+(user_data.date[0]-1))){latest_path+="/"+user_data.date[0]-1}
-                            else{response = "null";}
-                            if(response != "null"){
-                                log_dir = file_system.Dir(latest_path);
-                                if(log_dir.length>0){
-                                    latest_path += "/"+log_dir[log_dir.length-1];
-                                }
-                                log_dir = file_system.Dir(latest_path);
-                                if(log_dir.length>0){
-                                    response = "log\r\n"+file_system.fileRead(latest_path,log_dir[log_dir.length-1]);
-                                }else{
-                                    response = "null";
-                                }
-                            }
-                        }else{
-                            response = "null";
-                        }
-                    }
-
-
+                    console.log();
+                    //mqtt.send();
                 }else{
                     status_code = 403;
                     response    = "device";
