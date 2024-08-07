@@ -36,4 +36,11 @@ router.get('/select', async function(req, res) {
     let web_page = html.page("list",css,js);
     res.status(201).send(web_page);
 });
+
+router.get('/control', async function(req, res) {
+    const css = html.css("/public/css/main") + html.css("/public/css/control");
+    const js  = html.js("/public/js/control");
+    let web_page = html.page("control",css,js);
+    res.status(201).send(web_page);
+});
 module.exports = router;

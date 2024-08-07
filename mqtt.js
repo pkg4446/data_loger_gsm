@@ -1,7 +1,7 @@
 const mqtt      = require("mqtt");
 
 const options   = {
-    host:       smarthive.kr,
+    host:       "smarthive.kr",
     port:       1883,
     protocol:   "mqtt",
     username:   "test",
@@ -12,7 +12,7 @@ const client = mqtt.connect(options);
 client.subscribe("GSM");
 
 client.on("error", (error) => {console.log("Can't connect" + error);});
-client.on("connect", () => {console.log("connected: "+ client.connected);});
+client.on("connect", () => {console.log("mqtt state: "+ client.connected);});
 
 client.on("message", async(topic, message) => {	
     console.log(`토픽:${topic.toString()}, 메세지:${message.toString()}, ID:${client.getLastMessageId()}`);
