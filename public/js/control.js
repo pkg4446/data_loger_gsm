@@ -25,10 +25,10 @@ window.addEventListener('load', fetchInitialData);
 
         function populateForm(data) {
             // 관수
-            document.getElementById('water-hours').value = data.irrigation.water.hours;
-            document.getElementById('water-minutes').value = data.irrigation.water.minutes;
-            document.getElementById('nutrient-hours').value = data.irrigation.nutrient.hours;
-            document.getElementById('nutrient-minutes').value = data.irrigation.nutrient.minutes;
+            document.getElementById('water-run').value = data.water.run;
+            document.getElementById('water-spt').value = data.water.stp;
+            document.getElementById('nutrient-run').value = data.luquid.run;
+            document.getElementById('nutrient-spt').value = data.luquid.stp;
 
             // 조명
             document.getElementById('light-a-start').value = data.lighting.a.start;
