@@ -1,23 +1,26 @@
 window.addEventListener('load', fetchInitialData);
         
         function fetchInitialData() {
-            /*
             fetch(window.location.protocol+"//"+window.location.host+"/user/config", {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({
+                    id    : localStorage.getItem('user'),
+                    token : localStorage.getItem('token'),
+                    dvid  : localStorage.getItem('device'),
+                })
             })
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched initial data:', data);
-                populateForm(data);
+                //populateForm(data);
             })
             .catch((error) => {
                 console.error('Error fetching initial data:', error);
                 alert('초기 데이터를 불러오는 데 실패했습니다.');
             });
-            */
         }
 
         function populateForm(data) {

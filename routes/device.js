@@ -26,9 +26,14 @@ router.post('/log', async function(req, res) {
     }
     res.status(201).send("ack");
 });
-router.post('/refresh', async function(req, res) {    
-    const IP  = requestIp.getClientIp(req);
-    //console.log(IP,req.body);
+router.post('/config', async function(req, res) {    
+    console.log(req.body);
+    let device_config={};
+    const   path_device = "./data/device/"+req.body.DEVID;
+    if(file_system.check(path_device+"/config.json")) device_config = JSON.parse(file_system.fileRead(path_device,"config.json"));
+    if(device_config[req.body.cmd]===undefined) device_config[req.body.cmd]={};
+    device_config[req.body.cmd][req.body.type]=req.body.val;
+    file_system.fileMK(path_device,JSON.stringify(device_config),"config.json");
     res.status(201).send("ack");
 });
 
