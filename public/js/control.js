@@ -14,41 +14,79 @@ window.addEventListener('load', fetchInitialData);
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Fetched initial data:', data);
-                //populateForm(data);
+                populateForm(data);
             })
             .catch((error) => {
-                console.error('Error fetching initial data:', error);
                 alert('초기 데이터를 불러오는 데 실패했습니다.');
             });
         }
 
         function populateForm(data) {
+            console.log(data);
             // 관수
-            document.getElementById('water-run').value = data.water.run;
-            document.getElementById('water-spt').value = data.water.stp;
-            document.getElementById('nutrient-run').value = data.luquid.run;
-            document.getElementById('nutrient-spt').value = data.luquid.stp;
-
+            if(data.water != undefined){
+                if(data.water.run != undefined) document.getElementById('water-run').value = data.water.run;
+                if(data.water.stp != undefined) document.getElementById('water-stp').value = data.water.stp;
+            }
+            if(data.liquid != undefined){
+                if(data.liquid.run != undefined) document.getElementById('nutrient-run').value = data.liquid.run;
+                if(data.liquid.stp != undefined) document.getElementById('nutrient-stp').value = data.liquid.stp;
+            }
             // 조명
-            document.getElementById('light-a-start').value = data.lighting.a.start;
-            document.getElementById('light-a-end').value = data.lighting.a.end;
-            document.getElementById('light-b-start').value = data.lighting.b.start;
-            document.getElementById('light-b-end').value = data.lighting.b.end;
-            document.getElementById('light-c-start').value = data.lighting.c.start;
-            document.getElementById('light-c-end').value = data.lighting.c.end;
-            document.getElementById('light-d-start').value = data.lighting.d.start;
-            document.getElementById('light-d-end').value = data.lighting.d.end;
-
+            if(data.lamp_a != undefined){
+                if(data.lamp_a.run != undefined){
+                    if(data.lamp_a.run<10)data.lamp_a.run="0"+data.lamp_a.run;
+                    document.getElementById('light-a-run').value = data.lamp_a.run+":00";
+                }
+                if(data.lamp_a.stp != undefined){
+                    if(data.lamp_a.stp<10)data.lamp_a.run="0"+data.lamp_a.stp;
+                    document.getElementById('light-a-stp').value = data.lamp_a.stp+":00"
+                };
+            }
+            if(data.lamp_b != undefined){
+                if(data.lamp_b.run != undefined){
+                    if(data.lamp_b.run<10)data.lamp_b.run="0"+data.lamp_b.run;
+                    document.getElementById('light-b-run').value = data.lamp_b.run+":00"
+                };
+                if(data.lamp_b.stp != undefined){
+                    if(data.lamp_b.stp<10)data.lamp_b.stp="0"+data.lamp_b.stp;
+                    document.getElementById('light-b-stp').value = data.lamp_b.stp+":00"
+                };
+            }
+            if(data.lamp_c != undefined){
+                if(data.lamp_c.run != undefined){
+                    if(data.lamp_c.run<10)data.lamp_c.run="0"+data.lamp_c.run;
+                    document.getElementById('light-c-run').value = data.lamp_c.run+":00"
+                };
+                if(data.lamp_c.stp != undefined){
+                    if(data.lamp_c.stp<10)data.lamp_c.stp="0"+data.lamp_c.stp;
+                    document.getElementById('light-c-stp').value = data.lamp_c.stp+":00"
+                };
+            }
+            if(data.lamp_d != undefined){
+                if(data.lamp_d.run != undefined){
+                    if(data.lamp_d.run<10)data.lamp_d.run="0"+data.lamp_d.run;
+                    document.getElementById('light-d-run').value = data.lamp_d.run+":00"
+                };
+                if(data.lamp_d.stp != undefined){
+                    if(data.lamp_d.stp<10)data.lamp_d.stp="0"+data.lamp_d.stp;
+                    document.getElementById('light-d-stp').value = data.lamp_d.stp+":00"
+                };
+            }
             // 냉난방
-            document.getElementById('target-temp').value = data.temperature.target;
-            document.getElementById('temp-tolerance').value = data.temperature.tolerance;
-
+            if(data.temp != undefined){
+                if(data.temp.run != undefined) document.getElementById('target-temp').value = data.temp.run;
+                if(data.temp.stp != undefined) document.getElementById('temp-tolerance').value = data.temp.stp;
+            }
             // 공조
-            document.getElementById('internal-hours').value = data.airConditioning.internal.hours;
-            document.getElementById('internal-minutes').value = data.airConditioning.internal.minutes;
-            document.getElementById('external-hours').value = data.airConditioning.external.hours;
-            document.getElementById('external-minutes').value = data.airConditioning.external.minutes;
+            if(data.circul_i != undefined){
+                if(data.circul_i.run != undefined) document.getElementById('internal-run').value   = data.circul_i.run;
+                if(data.circul_i.stp != undefined) document.getElementById('internal-stp').value   = data.circul_i.stp;
+            }
+            if(data.circul_o != undefined){
+                if(data.circul_o.run != undefined) document.getElementById('external-run').value   = data.circul_o.run;
+                if(data.circul_o.stp != undefined) document.getElementById('external-stp').value   = data.circul_o.stp;
+            }
         }
 
         function sendData(type, action) {
@@ -60,15 +98,15 @@ window.addEventListener('load', fetchInitialData);
             }
             switch(type) {
                 case 'irrigation':
-                    data.data= [[document.getElementById('water-hours').value,document.getElementById('water-minutes').value],
-                                  [document.getElementById('nutrient-hours').value,document.getElementById('nutrient-minutes').value]
+                    data.data= [[document.getElementById('water-run').value,document.getElementById('water-stp').value],
+                                  [document.getElementById('nutrient-run').value,document.getElementById('nutrient-stp').value]
                                 ];
                     break;
                 case 'lighting':
-                    data.data=[[document.getElementById('light-a-start').value,document.getElementById('light-a-end').value],
-                                [document.getElementById('light-b-start').value,document.getElementById('light-b-end').value],
-                                [document.getElementById('light-c-start').value,document.getElementById('light-c-end').value],
-                                [document.getElementById('light-d-start').value,document.getElementById('light-d-end').value]
+                    data.data=[[document.getElementById('light-a-run').value,document.getElementById('light-a-stp').value],
+                                [document.getElementById('light-b-run').value,document.getElementById('light-b-stp').value],
+                                [document.getElementById('light-c-run').value,document.getElementById('light-c-stp').value],
+                                [document.getElementById('light-d-run').value,document.getElementById('light-d-stp').value]
                             ];
                     break;
                 case 'temperature':
@@ -78,8 +116,8 @@ window.addEventListener('load', fetchInitialData);
                             };
                     break;
                 case 'airConditioning':
-                    data.data = [[document.getElementById('internal-hours').value,document.getElementById('internal-minutes').value],
-                                [document.getElementById('external-hours').value,document.getElementById('external-minutes').value]
+                    data.data = [[document.getElementById('internal-run').value,document.getElementById('internal-stp').value],
+                                [document.getElementById('external-run').value,document.getElementById('external-stp').value]
                             ];
                     break;
                 case 'houseControl':

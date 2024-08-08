@@ -199,7 +199,6 @@ router.post('/config', async function(req, res) {
     let status_code = 400;
     let response    = "nodata";
     const user_data = req.body;
-    console.log(user_data);
     if(user_data.id!=undefined && user_data.token!=undefined && user_data.dvid!=undefined){
         const   path_user   = "./data/user/"+user_data.id;
         const   path_device = "./data/device/"+user_data.dvid;
@@ -237,50 +236,103 @@ router.post('/cmd', async function(req, res) {
                     status_code = 200;
                     response    = "ok";
                     let command = [];
+                    let pre_config = {};
+                    let mod_config = {};
+                    if(file_system.check(path_device+"/config.json")) pre_config = JSON.parse(file_system.fileRead(path_device,"config.json"));
+                    if(file_system.check(path_device+"/change.json")) mod_config = JSON.parse(file_system.fileRead(path_device,"change.json"));
                     if(user_data.type == 'irrigation'){
                         if(user_data.data[0][0]!=''){
-                            command.push("set water run "+user_data.data[0][0]+"\n");
+                            if(pre_config.water==undefined||pre_config.water.run==undefined||pre_config.water.run!=user_data.data[0][0]){
+                                command.push("set water run "+user_data.data[0][0]+"\n");
+                                if(mod_config.water==undefined) mod_config.water = {};
+                                mod_config.water.run = new Date();
+                            }
                         }
                         if(user_data.data[0][1]!=''){
-                            command.push("set water stp "+user_data.data[0][1]+"\n");
+                            if(pre_config.water==undefined||pre_config.water.stp==undefined||pre_config.water.stp!=user_data.data[0][1]){
+                                command.push("set water stp "+user_data.data[0][1]+"\n");
+                                if(mod_config.water==undefined) mod_config.water = {};
+                                mod_config.water.stp = new Date();
+                            }
                         }
                         if(user_data.data[1][0]!=''){
-                            command.push("set liquid run "+user_data.data[1][0]+"\n");
+                            if(pre_config.liquid==undefined||pre_config.liquid.run==undefined||pre_config.liquid.run!=user_data.data[1][0]){
+                                command.push("set liquid run "+user_data.data[1][0]+"\n");
+                                if(mod_config.liquid==undefined) mod_config.liquid = {};
+                                mod_config.liquid.run = new Date();
+                            }
                         }
                         if(user_data.data[1][1]!=''){
-                            command.push("set liquid stp "+user_data.data[1][1]+"\n");
+                            if(pre_config.liquid==undefined||pre_config.liquid.stp==undefined||pre_config.liquid.stp!=user_data.data[1][1]){
+                                command.push("set liquid stp "+user_data.data[1][1]+"\n");
+                                if(mod_config.liquid==undefined) mod_config.liquid = {};
+                                mod_config.liquid.stp = new Date();
+                            }
                         }
                     }else if(user_data.type == 'lighting'){
                         for (let index = 0; index < user_data.data.length; index++) {
                             const tartget = String.fromCharCode(97+index);
                             if(user_data.data[index][0]!=''){
-                                command.push("set lamp_"+tartget+" run "+parseInt(user_data.data[index][0].split(':')[0])+"\n");
+                                const post_value = parseInt(user_data.data[index][0].split(':')[0]);
+                                if(pre_config["lamp_"+tartget]==undefined||pre_config["lamp_"+tartget].run==undefined||pre_config["lamp_"+tartget].run!=post_value){
+                                    command.push("set lamp_"+tartget+" run "+post_value+"\n");
+                                    if(mod_config["lamp_"+tartget]==undefined) mod_config["lamp_"+tartget] = {};
+                                    mod_config["lamp_"+tartget].run = new Date();
+                                }
                             }
                             if(user_data.data[index][1]!=''){
-                                command.push("set lamp_"+tartget+" stp "+parseInt(user_data.data[index][1].split(':')[0])+"\n");
+                                const post_value = parseInt(user_data.data[index][1].split(':')[0]);
+                                if(pre_config["lamp_"+tartget]==undefined||pre_config["lamp_"+tartget].stp==undefined||pre_config["lamp_"+tartget].stp!=post_value){
+                                    command.push("set lamp_"+tartget+" stp "+post_value+"\n");
+                                    if(mod_config["lamp_"+tartget]==undefined) mod_config["lamp_"+tartget] = {};
+                                    mod_config["lamp_"+tartget].stp = new Date();
+                                }
                             }
                         }
                     }else if(user_data.type == 'temperature'){
                         if(user_data.data.target!=''){
-                            command.push("set temp run "+user_data.data.target+"\n");
+                            if(pre_config.temp==undefined||pre_config.temp.run==undefined||pre_config.temp.run!=user_data.data.target){
+                                command.push("set temp run "+user_data.data.target+"\n");
+                                if(mod_config.temp==undefined) mod_config.temp = {};
+                                mod_config.temp.run = new Date();
+                            }
                         }
                         if(user_data.data.tolerance!=''){
-                            command.push("set temp stp "+user_data.data.tolerance+"\n");
+                            if(pre_config.temp==undefined||pre_config.temp.stp==undefined||pre_config.temp.stp!=user_data.data.tolerance){
+                                command.push("set temp stp "+user_data.data.tolerance+"\n");
+                                if(mod_config.temp==undefined) mod_config.temp = {};
+                                mod_config.temp.stp = new Date();
+                            }
                         }
                     }else if(user_data.type == 'airConditioning'){
                         if(user_data.data[0][0]!=''){
-                            command.push("set circul_i run "+user_data.data[0][0]+"\n");
+                            if(pre_config.circul_i==undefined||pre_config.circul_i.run==undefined||pre_config.circul_i.run!=user_data.data[0][0]){
+                                command.push("set circul_i run "+user_data.data[0][0]+"\n");
+                                if(mod_config.circul_i==undefined) mod_config.circul_i = {};
+                                mod_config.circul_i.run = new Date();
+                            }
                         }
                         if(user_data.data[0][1]!=''){
-                            command.push("set circul_i stp "+user_data.data[0][1]+"\n");
+                            if(pre_config.circul_i==undefined||pre_config.circul_i.run==undefined||pre_config.circul_i.run!=user_data.data[0][1]){
+                                command.push("set circul_i stp "+user_data.data[0][1]+"\n");
+                                if(mod_config.circul_i==undefined) mod_config.circul_i = {};
+                                mod_config.circul_i.stp = new Date();
+                            }
                         }
                         if(user_data.data[1][0]!=''){
-                            command.push("set circul_o run "+user_data.data[1][0]+"\n");
+                            if(pre_config.circul_o==undefined||pre_config.circul_o.run==undefined||pre_config.circul_o.run!=user_data.data[1][0]){
+                                command.push("set circul_o run "+user_data.data[1][0]+"\n");
+                                if(mod_config.circul_o==undefined) mod_config.circul_o = {};
+                                mod_config.circul_o.run = new Date()
+                            }
                         }
                         if(user_data.data[1][1]!=''){
-                            command.push("set circul_o stp "+user_data.data[1][1]+"\n");
+                            if(pre_config.circul_o==undefined||pre_config.circul_o.run==undefined||pre_config.circul_o.run!=user_data.data[1][1]){
+                                command.push("set circul_o stp "+user_data.data[1][1]+"\n");
+                                if(mod_config.circul_o==undefined) mod_config.circul_o = {};
+                                mod_config.circul_o.stp = new Date()
+                            }
                         }
-                        console.log(command);
                     }else if(user_data.type == 'houseControl'){
                         if(user_data.data == "open"){
                             command.push("wing on\n");
@@ -296,6 +348,7 @@ router.post('/cmd', async function(req, res) {
                             };
                             mqtt.send(mqtt_cmd);
                         }
+                        file_system.fileMK(path_device,JSON.stringify(mod_config),"change.json")
                     }
                     else{response = "null"}
                     

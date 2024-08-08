@@ -26,13 +26,15 @@ router.post('/log', async function(req, res) {
     }
     res.status(201).send("ack");
 });
+
 router.post('/config', async function(req, res) {    
-    console.log(req.body);
     let device_config={};
     const   path_device = "./data/device/"+req.body.DEVID;
     if(file_system.check(path_device+"/config.json")) device_config = JSON.parse(file_system.fileRead(path_device,"config.json"));
     if(device_config[req.body.cmd]===undefined) device_config[req.body.cmd]={};
+    if(device_config[req.body.cmd+"_t"]===undefined) device_config[req.body.cmd+"_t"]={};
     device_config[req.body.cmd][req.body.type]=req.body.val;
+    device_config[req.body.cmd+"_t"][req.body.type]=new Date();
     file_system.fileMK(path_device,JSON.stringify(device_config),"config.json");
     res.status(201).send("ack");
 });
