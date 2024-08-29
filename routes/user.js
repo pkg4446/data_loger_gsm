@@ -335,9 +335,9 @@ router.post('/cmd', async function(req, res) {
                         }
                     }else if(user_data.type == 'houseControl'){
                         if(user_data.data == "open"){
-                            command.push("wing on\n");
+                            command.push("wing on \n");
                         }else if(user_data.data == "close"){
-                            command.push("wing off\n");
+                            command.push("wing off \n");
                         }
                     }
                     if(command.length > 0){

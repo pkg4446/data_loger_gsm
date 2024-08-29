@@ -35,42 +35,34 @@ window.addEventListener('load', fetchInitialData);
             // 조명
             if(data.lamp_a != undefined){
                 if(data.lamp_a.run != undefined){
-                    if(data.lamp_a.run<10)data.lamp_a.run="0"+data.lamp_a.run;
-                    document.getElementById('light-a-run').value = data.lamp_a.run+":00";
+                    document.getElementById('light-a-run').value = data.lamp_a.run;
                 }
                 if(data.lamp_a.stp != undefined){
-                    if(data.lamp_a.stp<10)data.lamp_a.run="0"+data.lamp_a.stp;
-                    document.getElementById('light-a-stp').value = data.lamp_a.stp+":00"
+                    document.getElementById('light-a-stp').value = data.lamp_a.stp;
                 };
             }
             if(data.lamp_b != undefined){
                 if(data.lamp_b.run != undefined){
-                    if(data.lamp_b.run<10)data.lamp_b.run="0"+data.lamp_b.run;
-                    document.getElementById('light-b-run').value = data.lamp_b.run+":00"
+                    document.getElementById('light-b-run').value = data.lamp_b.run;
                 };
                 if(data.lamp_b.stp != undefined){
-                    if(data.lamp_b.stp<10)data.lamp_b.stp="0"+data.lamp_b.stp;
-                    document.getElementById('light-b-stp').value = data.lamp_b.stp+":00"
+                    document.getElementById('light-b-stp').value = data.lamp_b.stp;
                 };
             }
             if(data.lamp_c != undefined){
                 if(data.lamp_c.run != undefined){
-                    if(data.lamp_c.run<10)data.lamp_c.run="0"+data.lamp_c.run;
-                    document.getElementById('light-c-run').value = data.lamp_c.run+":00"
+                    document.getElementById('light-c-run').value = data.lamp_c.run;
                 };
                 if(data.lamp_c.stp != undefined){
-                    if(data.lamp_c.stp<10)data.lamp_c.stp="0"+data.lamp_c.stp;
-                    document.getElementById('light-c-stp').value = data.lamp_c.stp+":00"
+                    document.getElementById('light-c-stp').value = data.lamp_c.stp;
                 };
             }
             if(data.lamp_d != undefined){
                 if(data.lamp_d.run != undefined){
-                    if(data.lamp_d.run<10)data.lamp_d.run="0"+data.lamp_d.run;
-                    document.getElementById('light-d-run').value = data.lamp_d.run+":00"
+                    document.getElementById('light-d-run').value = data.lamp_d.run;
                 };
                 if(data.lamp_d.stp != undefined){
-                    if(data.lamp_d.stp<10)data.lamp_d.stp="0"+data.lamp_d.stp;
-                    document.getElementById('light-d-stp').value = data.lamp_d.stp+":00"
+                    document.getElementById('light-d-stp').value = data.lamp_d.stp;
                 };
             }
             // 냉난방

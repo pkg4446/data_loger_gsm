@@ -13,9 +13,7 @@
 }
 input[type="number"]{
     width: 60px;
-}
-input[type="time"] {
-    width: 110px;
+    text-align: right;
 }
 button {
     background-color: #3c6e51;
