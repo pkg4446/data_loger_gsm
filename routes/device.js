@@ -15,7 +15,7 @@ router.post('/log', async function(req, res) {
     let     filename    = "";
     if(date_now.getDate()<10) filename += "0";
     filename += date_now.getDate();
-    let file_content    = date_now+","+req.body.t_w+","+req.body.t_l+","+req.body.t_a+","+req.body.t_o+"\r\n";
+    let file_content    = date_now+","+req.body.t_w+","+req.body.t_l+","+req.body.t_a+","+req.body.t_o+","+req.body.ze3+"\r\n";
     
     if(!file_system.check(path_log)) file_system.folderMK(path_log);
     file_system.fileMK(path_device,IP+"\r\n","ip.txt");
